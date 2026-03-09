@@ -166,11 +166,19 @@ def send_to_feishu(
             f"发送{log_prefix}第 {i}/{len(batches)} 批次，大小：{content_size} 字节 [{report_type}]"
         )
 
-        # 飞书 webhook 只显示 content.text，所有信息都整合到 text 中
+        # 飞书卡片消息（interactive），支持 lark_md 渲染链接、颜色、粗体等
         payload = {
-            "msg_type": "text",
-            "content": {
-                "text": batch_content,
+            "msg_type": "interactive",
+            "card": {
+                "elements": [
+                    {
+                        "tag": "div",
+                        "text": {
+                            "tag": "lark_md",
+                            "content": batch_content,
+                        },
+                    }
+                ]
             },
         }
 
